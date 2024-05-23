@@ -5,9 +5,9 @@
 This repository collects configuration files and istructions to reproduce a working environment based on Linux OS.
 Read about stow at this [link](https://finnala.dev/blog/git-symlinks-and-stow-how-to-manage-your-dotfiles/)
 
-Install the required packages:
+Install the following packages:
 ```
-sudo apt-get install tree git stow zsh neovim
+tree git stow zsh neovim zellij
 ```
 
 ## ZSH

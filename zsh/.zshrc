@@ -29,5 +29,6 @@ fpath+=($HOME/.zsh/pure)
 autoload -Uz promptinit
 promptinit
 prompt pure
+xdotool key ctrl+l
 
 # End of lines for ZSH pure prompt
