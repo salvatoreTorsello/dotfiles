@@ -7,7 +7,7 @@ Read about stow at this [link](https://finnala.dev/blog/git-symlinks-and-stow-ho
 
 Install the following packages:
 ```
-tree git stow zsh neovim zellij
+xdotree git stow zsh neovim zellij
 ```
 
 ## ZSH

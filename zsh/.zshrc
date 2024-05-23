@@ -32,3 +32,7 @@ prompt pure
 xdotool key ctrl+l
 
 # End of lines for ZSH pure prompt
+
+# Aliases
+
+alias clear='clear; xdotool key ctrl+l'
