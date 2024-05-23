@@ -22,3 +22,8 @@ After that, just delete/rename old ~/.zshrc file and then whitin dotfiles direct
 ```
 $ git stow zsh
 ```
+
+Make zsh the default shell
+```
+$ chsh -s $(which zsh)
+```
