@@ -31,6 +31,3 @@ promptinit
 prompt pure
 
 # End of lines for ZSH pure prompt
-
-
-source ~/.zshrc_profile
