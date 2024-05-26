@@ -1,0 +1,10 @@
+alias ls-srvs='sudo lsof -i -P -n | grep LISTEN'
+
+function sshlog() {
+        LOGDIR=~/sshlogs
+        mkdir -p $LOGDIR
+        date=$(date '+%y-%m-%d-%H%M%S')
+        filename="${LOGDIR}/${1}_${date}.log"
+        ssh $1 2>&1 | tee -ai $filename
+        echo "ssh session saved in ${filename}"
+}

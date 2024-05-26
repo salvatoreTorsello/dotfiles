@@ -1,5 +1,0 @@
-# ignore all . files and direcotries but
-# include .gitignore file and .config folders
-.*
-!/.gitignore
-!.config/
