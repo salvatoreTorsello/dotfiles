@@ -19,9 +19,12 @@ autoload -Uz compinit
 compinit
 
 zstyle ':completion:*' menu select
+zstyle ':completion:*' special-dirs true
 zstyle ':completion::complete:*' gain-privileges 1
 
 # End of lines added by compinstall
+
+
 
 # ZSH pure prompt
 
@@ -31,6 +34,8 @@ promptinit
 prompt pure
 
 # End of lines for ZSH pure prompt
+
+
 
 # set PATH so it includes /usr/local/go/bin if it exists
 if [ -d "/usr/local/go/bin" ] ; then
