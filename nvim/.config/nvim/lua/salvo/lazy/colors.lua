@@ -27,6 +27,7 @@ return {
                     floats = "dark", -- style for floating windows
                 },
             })
+            vim.cmd.colorscheme("tokyonight-night")
         end
     },
 
@@ -40,18 +41,8 @@ return {
                     italic = false,
                 },
             })
-
-            vim.cmd("colorscheme rose-pine")
-
-            ColorMyPencils()
+            -- vim.cmd("colorscheme rose-pine")
+            -- ColorMyPencils()
         end
     },
-
-       {
-                "EdenEast/nightfox.nvim",
-                config = function()
-                        vim.cmd("colorscheme nightfox")
-                end
-        }
-
 }
