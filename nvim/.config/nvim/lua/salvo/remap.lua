@@ -56,3 +56,13 @@ vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
 
+-- ASCII Doc preview
+vim.keymap.set('n', '<Leader>cp', ':AsciiDocPreview<CR>', { desc = 'Preview AsciiDoc document' })
+
+-- LSP config
+vim.keymap.set("n", "<Leader>[", ':ClangdSwitchSourceHeader<CR>', { desc = 'Switch to source or header file' })
+
+-- Arrow key movements
+vim.keymap.set("n", "<leader><Left>", ':bp<CR>')
+vim.keymap.set("n", "<leader><Right>", ':bn<CR>')
+

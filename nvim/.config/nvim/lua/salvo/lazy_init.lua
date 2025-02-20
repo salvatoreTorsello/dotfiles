@@ -12,6 +12,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    spec = "salvo.lazy",
+    spec = {
+        { import = "salvo.lazy" },
+        { import = "salvo.lazy.lsp" }
+    },
     change_detection = { notify = false }
 })
