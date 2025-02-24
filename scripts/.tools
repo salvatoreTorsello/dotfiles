@@ -8,3 +8,5 @@ function sshlog() {
         ssh $1 2>&1 | tee -ai $filename
         echo "ssh session saved in ${filename}"
 }
+
+alias wake-pvelab="wakeonlan 00:e0:4c:e1:08:82"
