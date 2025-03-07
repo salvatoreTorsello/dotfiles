@@ -46,3 +46,8 @@ fi
 
 # Go variables for nvim
 export GO111MODULE=on
+
+
+
+# Aliases
+alias ls='ls --color=auto'
