@@ -1,17 +1,14 @@
-# Lines configured by zsh-newuser-install
+# ZSH main configuration
 
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
 setopt notify
 unsetopt beep
-bindkey -v
+bindkey -e
+bindkey '^R' history-incremental-search-backward
 
-# End of lines configured by zsh-newuser-install
-
-
-
-# The following lines were added by compinstall
+# compistall configuration
 
 zstyle :compinstall filename '/home/salvo/.zshrc'
 
@@ -22,10 +19,6 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' special-dirs true
 zstyle ':completion::complete:*' gain-privileges 1
 
-# End of lines added by compinstall
-
-
-
 # ZSH pure prompt
 
 fpath+=($HOME/.zsh/pure)
@@ -33,21 +26,17 @@ autoload -Uz promptinit
 promptinit
 prompt pure
 
-# End of lines for ZSH pure prompt
 
+# Nvim go configuration
 
-
-# set PATH so it includes /usr/local/go/bin if it exists
 if [ -d "/usr/local/go/bin" ] ; then
         PATH="/usr/local/go/bin:$PATH"
 fi
-
-
-
-# Go variables for nvim
 export GO111MODULE=on
 
-
+# Note: for wsl only, switch to home dir
+cd ~
 
 # Aliases
+
 alias ls='ls --color=auto'
