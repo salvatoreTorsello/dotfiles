@@ -9,4 +9,9 @@ function sshlog() {
         echo "ssh session saved in ${filename}"
 }
 
+function port-listen() {
+        sudo lsof -i -P -n | grep LISTEN
+}
+
 alias wake-pvelab="wakeonlan 00:e0:4c:e1:08:82"
+
