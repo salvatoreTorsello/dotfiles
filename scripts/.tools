@@ -15,3 +15,5 @@ function port-listen() {
 
 alias wake-pvelab="wakeonlan 00:e0:4c:e1:08:82"
 
+# Zellij 
+alias zrf='zellij run -f -- '
