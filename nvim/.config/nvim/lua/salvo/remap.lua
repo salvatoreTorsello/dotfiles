@@ -19,8 +19,12 @@ vim.keymap.set("n", "<leader>svwm", function()
     require("vim-with-me").StopVimWithMe()
 end)
 
+-- vim.keymap.set('n', '<leader>o', '<Cmd>b#<CR>')
+vim.keymap.set('n', '<leader>o', '<C-o>')
+
 -- greatest remap ever
-vim.keymap.set("x", "<leader>p", [["_dP]])
+-- vim.keymap.set("x", "<leader>p", [["_dP]])
+vim.keymap.set("x", "p", [["_dP]])
 
 -- next greatest remap ever : asbjornHaland
 vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
