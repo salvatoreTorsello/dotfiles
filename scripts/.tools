@@ -1,5 +1,3 @@
-alias ls-srvs='sudo lsof -i -P -n | grep LISTEN'
-
 function sshlog() {
         LOGDIR=~/sshlogs
         mkdir -p $LOGDIR
@@ -13,7 +11,25 @@ function port-listen() {
         sudo lsof -i -P -n | grep LISTEN
 }
 
-alias wake-pvelab="wakeonlan 00:e0:4c:e1:08:82"
+function lesslt() {
+        ls -1t "$1" | head -n 1 | xargs -I {} less -R "$1/{}"
+}
+
+function lesslt-col() {
+        ls -1t "$1" | grep colored | head -n 1 | xargs -I {} less -R "$1/{}"
+}
+
+############################################
+# Aliases 
+############################################
+
+# Python alias
+alias python="python3"
 
 # Zellij 
 alias zrf='zellij run -f -- '
+
+alias less-col='less -R +F '
+alias ls-srvs='sudo lsof -i -P -n | grep LISTEN'
+
+alias wake-pvelab="wakeonlan 00:e0:4c:e1:08:82"

@@ -5,7 +5,7 @@ HISTSIZE=1000
 SAVEHIST=1000
 setopt notify
 unsetopt beep
-bindkey -e
+bindkey -v
 bindkey '^R' history-incremental-search-backward
 
 # compistall configuration
@@ -40,3 +40,7 @@ cd ~
 # Aliases
 
 alias ls='ls --color=auto'
+
+if [[ -e $HOME/.cargo/env ]]; then
+        . "$HOME/.cargo/env"
+fi
