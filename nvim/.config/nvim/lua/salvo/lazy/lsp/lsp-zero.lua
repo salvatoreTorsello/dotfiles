@@ -117,18 +117,18 @@ return {
                                                                 path = "/usr/bin/black",
                                                         },
                                                         -- Ensure formatting is enabled
-                                                        pylsp_mypy = {
-
-                                                                enabled = true,
-                                                                live_mode = false,
-
-                                                        },
-                                                        autopep8 = {
-                                                                enabled = false,
-                                                        },
-                                                        yapf = {
-                                                                enabled = false,
-                                                        }
+                                                        -- pylsp_mypy = {
+                                                        --
+                                                        --         enabled = true,
+                                                        --         live_mode = false,
+                                                        --
+                                                        -- },
+                                                        -- autopep8 = {
+                                                        --         enabled = false,
+                                                        -- },
+                                                        -- yapf = {
+                                                        --         enabled = false,
+                                                        -- }
                                                 }
                                         }
                                 }
