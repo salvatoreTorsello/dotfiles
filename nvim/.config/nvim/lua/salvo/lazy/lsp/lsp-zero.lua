@@ -143,19 +143,10 @@ return {
                                                                 enabled = true,
                                                                 path = "/usr/bin/black",
                                                         },
-                                                        -- Ensure formatting is enabled
-                                                        -- pylsp_mypy = {
-                                                        --
-                                                        --         enabled = true,
-                                                        --         live_mode = false,
-                                                        --
-                                                        -- },
-                                                        -- autopep8 = {
-                                                        --         enabled = false,
-                                                        -- },
-                                                        -- yapf = {
-                                                        --         enabled = false,
-                                                        -- }
+                                                        pycodestyle = {
+                                                                enabled = true,
+                                                                maxLineLength = 90,
+                                                        },
                                                 }
                                         }
                                 }
@@ -167,11 +158,12 @@ return {
                                 callback = function(args)
                                         local ft = vim.bo[args.buf].filetype
                                         if ft == "python" then
-                                                -- async shell call to black in the file’s working directory
-                                                vim.fn.jobstart({ "black", "-" }, {
-                                                        stdin = args.data,
-                                                        on_stdout = function(_, data) vim.api.nvim_buf_set_lines(args.buf, 0, -1, false, data) end,
-                                                })
+                                                -- Synchronously format the buffer with Black
+                                                local lines = vim.api.nvim_buf_get_lines(args.buf, 0, -1, false)
+                                                local formatted = vim.fn.systemlist("black -l 80 -q -", lines)
+                                                if vim.v.shell_error == 0 then
+                                                        vim.api.nvim_buf_set_lines(args.buf, 0, -1, false, formatted)
+                                                end
                                         else
                                                 -- fallback to lsp formatter (clangd) for c/c++
                                                 vim.lsp.buf.format({ async = false })
