@@ -163,9 +163,19 @@ return {
 
                         -- Autoformat on save
                         vim.api.nvim_create_autocmd("BufWritePre", {
-                                pattern = "*.py",
-                                callback = function()
-                                        vim.cmd("!black %:p")                    -- Run Black in correct dir
+                                pattern = { "*.py", "*.c", "*.cpp", "*.h", "*.hpp", "*.cc", "*.hh", "*.cxx", "*.hxx" },
+                                callback = function(args)
+                                        local ft = vim.bo[args.buf].filetype
+                                        if ft == "python" then
+                                                -- async shell call to black in the file’s working directory
+                                                vim.fn.jobstart({ "black", "-" }, {
+                                                        stdin = args.data,
+                                                        on_stdout = function(_, data) vim.api.nvim_buf_set_lines(args.buf, 0, -1, false, data) end,
+                                                })
+                                        else
+                                                -- fallback to lsp formatter (clangd) for c/c++
+                                                vim.lsp.buf.format({ async = false })
+                                        end
                                 end,
                         })
                 end
