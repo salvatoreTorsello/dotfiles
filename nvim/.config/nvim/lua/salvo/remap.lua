@@ -48,7 +48,10 @@ end)
 vim.keymap.set('n', '<Leader>cp', ':AsciiDocPreview<CR>', { desc = 'Preview AsciiDoc document' })
 
 -- LSP config
-vim.keymap.set("n", "<Leader>[", ':ClangdSwitchSourceHeader<CR>', { desc = 'Switch to source or header file' })
+-- vim.keymap.set("n", "<leader>[", ':ClangdSwitchSourceHeader<CR>', { desc = 'Switch to source or header file' })
+
+-- Switch beetween .c ah .h file  
+vim.keymap.set('n', '<leader>f', ":execute 'e %<.' . (expand('%:e')=='c'?'h':'c')<CR>")
 
 -- Arrow key movements
 vim.keymap.set("n", "<leader><Left>", ':bp<CR>')
