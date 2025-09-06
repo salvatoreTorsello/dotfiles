@@ -174,12 +174,47 @@ return {
                                                 if vim.v.shell_error == 0 then
                                                         vim.api.nvim_buf_set_lines(args.buf, 0, -1, false, formatted)
                                                 end
-                                        else
+                                        -- else
                                                 -- fallback to lsp formatter (clangd) for c/c++
-                                                vim.lsp.buf.format({ async = false })
+                                                -- vim.lsp.buf.format({ async = false })
                                         end
                                 end,
                         })
+
+                        -- ------------------------------------------------------------------
+                        -- Recursively format every .c / .h file in the current directory
+                        -- ------------------------------------------------------------------
+                        vim.api.nvim_create_user_command('ClangFormatAll', function()
+                          local scan = require 'plenary.scandir'
+
+                          -- 1. Collect every .c / .h file under "."
+                          local paths = scan.scan_dir('.', {
+                            search_pattern = [[^.*%.[ch]$]],
+                            respect_gitignore = false,
+                          })
+
+                          if #paths == 0 then
+                            vim.notify('No .c / .h files found', vim.log.levels.WARN)
+                            return
+                          end
+
+                          -- 2. Load each file into a hidden buffer and format via LSP
+                          local done = 0
+                          for _, path in ipairs(paths) do
+                            vim.schedule(function()
+                              vim.cmd('silent noautocmd edit ' .. vim.fn.fnameescape(path))
+                              vim.lsp.buf.format({ async = false })
+                              vim.cmd('silent noautocmd write')
+                              vim.cmd('silent noautocmd bdelete')
+
+                              done = done + 1
+                              if done == #paths then
+                                vim.notify('clang-format (via LSP) finished', vim.log.levels.INFO)
+                              end
+                            end)
+                          end
+                        end, { desc = 'LSP-format every .c / .h file in cwd (recursive)' })
+
                 end
         }
 }
