@@ -107,7 +107,7 @@ return {
                                         "lua_ls",
                                         "pylsp",
                                         "clangd",
-                                        "jinja-lsp",
+                                        -- "jinja-lsp",
                                 },
                                 handlers = {
                                         function(server_name)
@@ -144,9 +144,19 @@ return {
                                                                 path = "/usr/bin/black",
                                                         },
                                                         pycodestyle = {
-                                                                enabled = true,
+                                                                enabled = false,
                                                                 maxLineLength = 90,
                                                         },
+                                                        ruff = {
+                                                                enabled = true,
+                                                                maxLineLength = 90,
+                                                                select = { "E", "W", "F", "N" },
+                                                        },
+                                                        flake8 = {
+                                                                enabled = false,
+                                                                maxLineLength = 90,
+                                                                ignore = {},   -- keep empty unless you need to skip rules
+                                                        }
                                                 }
                                         }
                                 }
