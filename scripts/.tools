@@ -25,6 +25,7 @@ function lesslt-col() {
 
 # Python alias
 alias python="python3"
+alias avenv="source venv/bin/activate"
 
 # Zellij 
 alias zrf='zellij run -f -- '
