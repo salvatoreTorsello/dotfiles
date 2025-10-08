@@ -174,9 +174,9 @@ return {
                                                 if vim.v.shell_error == 0 then
                                                         vim.api.nvim_buf_set_lines(args.buf, 0, -1, false, formatted)
                                                 end
-                                        -- else
+                                        else
                                                 -- fallback to lsp formatter (clangd) for c/c++
-                                                -- vim.lsp.buf.format({ async = false })
+                                                vim.lsp.buf.format({ async = false })
                                         end
                                 end,
                         })
