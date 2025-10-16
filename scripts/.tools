@@ -34,3 +34,6 @@ alias less-col='less -R +F '
 alias ls-srvs='sudo lsof -i -P -n | grep LISTEN'
 
 alias wake-pvelab="wakeonlan 00:e0:4c:e1:08:82"
+
+# Git
+alias git-tags-list="git for-each-ref --sort=creatordate --format '%(refname) %(creatordate)' refs/tags"
