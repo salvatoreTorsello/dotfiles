@@ -111,22 +111,20 @@ return {
                                 },
                                 handlers = {
                                         function(server_name)
-                                                require('lspconfig')[server_name].setup({})
+                                                -- require('lspconfig')[server_name].setup({})
+                                                vim.lsp.config(server_name,{})
                                         end,
                                 }
                         })
 
                         -- Python LSP (pylsp) with automatic venv detection
-                        local lspconfig = require('lspconfig')
+                        -- local lspconfig = require('lspconfig')
                         local util = require("lspconfig/util")
 
-                        lspconfig.pylsp.setup {
+                        -- lspconfig.pylsp.setup {
+                        vim.lsp.config('pylsp', {
                                 on_attach = on_attach,
                                 capabilities = capabilities,
-                                root_dir = function(fname)
-                                        return util.root_pattern("pyproject.toml", "setup.py", "requirements.txt", "venv")(fname) or
-                                               util.path.dirname(fname)
-                                end,
                                 settings = {
                                         pylsp = {
                                                 plugins = {
@@ -160,7 +158,7 @@ return {
                                                 }
                                         }
                                 }
-                        }
+                        })
 
                         -- Autoformat on save
                         vim.api.nvim_create_autocmd("BufWritePre", {
