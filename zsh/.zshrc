@@ -44,3 +44,9 @@ alias ls='ls --color=auto'
 if [[ -e $HOME/.cargo/env ]]; then
         . "$HOME/.cargo/env"
 fi
+
+# Brew path
+
+if [[ -d "/home/linuxbrew/.linuxbrew/bin/" ]]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+fi
