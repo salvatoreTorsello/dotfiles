@@ -1,4 +1,5 @@
 return {
+        -- Mason for managing external tools
         {
                 'williamboman/mason.nvim',
                 lazy = false,
@@ -15,34 +16,26 @@ return {
                                         c = { 'clang-format' },
                                         cpp = { 'clang-format' },
                                         cuda = { 'clang-format' },
-                                        cs = { 'clang-format' },
                                 },
                                 format_on_save = {
                                         timeout_ms = 1000,
-                                        lsp_fallback = true,
+                                        lsp_fallback = false,
                                 },
-                        })
-
-                        -- Refresh treesitter highlighting after formatting
-                        vim.api.nvim_create_autocmd("BufWritePost", {
-                                callback = function()
-                                        -- Refresh treesitter highlighting
-                                        vim.api.nvim_exec("TSBufEnable highlight", false)
-                                end,
+                                log_level = vim.log.levels.DEBUG,
                         })
 
                         -- Keymap for manual formatting
                         vim.api.nvim_create_user_command('Format', function(args)
                                 local range = nil
-                                if args.count then
-                                        local end_line = vim.api.nvim_buf_get_lines(0, args.count, args.count, false)
+                                if args.count ~= -1 then
+                                        local end_line = vim.api.nvim_buf_get_lines(0, args.count - 1, args.count, false)
                                         range = {
                                                 { args.line1 - 1, 0 },
                                                 { args.count - 1, #end_line[1] },
                                         }
                                 end
-                                require('conform').format({ async = true, lsp_fallback = true, range = range })
-                        end, { range = '%' })
+                                require('conform').format({ async = true, lsp_fallback = false, range = range })
+                        end, { range = true })
                 end,
         },
 
@@ -108,29 +101,41 @@ return {
                                 require('cmp_nvim_lsp').default_capabilities()
                         )
 
+                        -- Ensure clangd formatting is disabled to prevent conflicts
+                        local on_attach = function(client, bufnr)
+                                -- Disable formatting for clangd to let conform.nvim handle it
+                                if client.name == 'clangd' then
+                                        client.server_capabilities.documentFormattingProvider = false
+                                        client.server_capabilities.documentRangeFormattingProvider = false
+                                end
+
+                                local opts = { buffer = bufnr }
+
+                                vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
+                                vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
+                                vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
+                                vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
+                                vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
+                                vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
+                                vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
+                                vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
+                                -- Use conform.nvim for manual formatting instead of LSP
+                                vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>Format<cr>', opts)
+                                vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+                                vim.keymap.set('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<cr>', opts)
+
+                                vim.api.nvim_create_autocmd("CursorHold", {
+                                        buffer = bufnr,
+                                        callback = function()
+                                                vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
+                                        end,
+                                })
+                        end
+
                         vim.api.nvim_create_autocmd('LspAttach', {
                                 desc = 'LSP actions',
                                 callback = function(event)
-                                        local opts = { buffer = event.buf }
-
-                                        vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
-                                        vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-                                        vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-                                        vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-                                        vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-                                        vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-                                        vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-                                        vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-                                        vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-                                        vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
-                                        vim.keymap.set('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<cr>', opts)
-
-                                        vim.api.nvim_create_autocmd("CursorHold", {
-                                                buffer = event.buf,
-                                                callback = function()
-                                                        vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
-                                                end,
-                                        })
+                                        on_attach(vim.lsp.get_client_by_id(event.data.client_id), event.buf)
                                 end,
                         })
 
@@ -142,14 +147,16 @@ return {
                                 },
                                 handlers = {
                                         function(server_name)
-                                                vim.lsp.config(server_name, {})
+                                                require('lspconfig')[server_name].setup({
+                                                        on_attach = on_attach,
+                                                })
                                         end,
                                 }
                         })
 
-                        vim.lsp.config('pylsp', {
+                        -- Configure pylsp
+                        require('lspconfig').pylsp.setup({
                                 on_attach = on_attach,
-                                capabilities = capabilities,
                                 settings = {
                                         pylsp = {
                                                 plugins = {
