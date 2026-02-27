@@ -24,7 +24,7 @@ return {
                                 vim.wo.rnu = false
                                 vim.opt.colorcolumn = "0"
                         end
-                        colormypencils()
+                        ColorMyPencils()
                 end, { silent = true })
         end
 }
