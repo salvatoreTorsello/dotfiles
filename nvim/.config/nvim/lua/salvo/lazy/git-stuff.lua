@@ -2,7 +2,11 @@ return {
         {
                 "lewis6991/gitsigns.nvim",
                 config = function()
-                        require("gitsigns").setup()
+                        vim.opt.signcolumn = "no"
+
+                        require("gitsigns").setup({
+                                numhl = true,
+                        })
                 end
         },
         {
@@ -42,5 +46,5 @@ return {
                         vim.keymap.set("n", "gu", "<cmd>diffget //2<CR>")
                         vim.keymap.set("n", "gh", "<cmd>diffget //3<CR>")
                 end
-        }
+        },
 }
