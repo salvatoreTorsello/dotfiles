@@ -44,14 +44,35 @@ vim.keymap.set("n", "<leader><leader>", function()
         vim.cmd("so")
 end)
 
--- ASCII Doc preview
-vim.keymap.set('n', '<Leader>cp', ':AsciiDocPreview<CR>', { desc = 'Preview AsciiDoc document' })
-
--- LSP config
--- vim.keymap.set("n", "<leader>[", ':ClangdSwitchSourceHeader<CR>', { desc = 'Switch to source or header file' })
-
 -- Switch beetween .c ah .h file  
-vim.keymap.set('n', '<leader>f', ":execute 'e %<.' . (expand('%:e')=='c'?'h':'c')<CR>")
+-- vim.keymap.set('n', '<leader>f', ":execute 'e %<.' . (expand('%:e')=='c'?'h':'c')<CR>")
+vim.keymap.set('n', '<leader>f', function()
+        local ext = vim.fn.expand('%:e')
+        local base_name = vim.fn.expand('%:p:r')
+
+        -- If current file has .c, .cpp, or .C extension, switch to .h
+        if ext == 'c' or ext == 'cpp' or ext == 'C' then
+                vim.cmd('edit ' .. base_name .. '.h')
+                -- If current file has .h extension, try switching to corresponding .c, .cpp, or .C
+        elseif ext == 'h' then
+
+                local c_file = vim.fn.glob(base_name .. '.c')
+                local cpp_file = vim.fn.glob(base_name .. '.cpp')
+                local C_file = vim.fn.glob(base_name .. '.C')
+
+                if c_file ~= '' then
+                        vim.cmd('edit ' .. c_file)
+                elseif cpp_file ~= '' then
+                        vim.cmd('edit ' .. cpp_file)
+                elseif C_file ~= '' then
+                        vim.cmd('edit ' .. C_file)
+                else
+                        print('No corresponding C/C++ file found')
+                end
+        else
+                print('Unsupported extension: only .c, .cpp, .C, and .h files are supported')
+        end
+end)
 
 -- Arrow key movements
 vim.keymap.set("n", "<leader><Left>", ':bp<CR>')
@@ -108,5 +129,4 @@ vim.keymap.set('n', '<leader>ghf', function()
                 print("File not found: " .. file)
         end
 end, { silent = true })
-
 
