@@ -1,8 +1,6 @@
 return {
         "nvim-telescope/telescope.nvim",
 
-        tag = "0.1.5",
-
         dependencies = {
                 "nvim-lua/plenary.nvim"
         },
@@ -22,6 +20,9 @@ return {
                                         -- "--no-ignore",
                                         "--no-hidden"
                                 },
+                                preview = {
+                                        treesitter = true
+                                }
                         },
                 })
                 local builtin = require('telescope.builtin')
