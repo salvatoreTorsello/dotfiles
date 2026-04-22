@@ -3,6 +3,22 @@ return {
                 "nvim-mini/mini.nvim",
                 event = "VeryLazy",
                 config = function()
+                        require('mini.pairs').setup()  -- Auto-pair insertion
+                        require('mini.comment').setup()  -- Comment toggling
+                        require('mini.surround').setup()  -- Surround text manipulation
+
+                        -- Cursor and word
+                        require('mini.cursorword').setup()  -- Highlight current word
+
+                        -- Indentation
+                        require('mini.indentscope').setup()  -- Visualize indentation
+
+                        -- Git integration
+                        require('mini.git').setup()  -- Inline git blame and signs
+
+                        -- File management
+                        require('mini.files').setup()  -- File explorer <kcite ref="38"/>
+
                         -- Highlight patterns like TODO, FIXME, HACK, NOTE
                         local hipatterns = require('mini.hipatterns')
                         hipatterns.setup({
