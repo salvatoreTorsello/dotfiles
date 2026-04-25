@@ -54,3 +54,7 @@ fi
 # Auto suggestions
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
+
+if [[ -f ~/.tools ]]; then
+        source ~/.tools
+fi
