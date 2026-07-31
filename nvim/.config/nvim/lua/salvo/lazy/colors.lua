@@ -10,9 +10,9 @@ return {
                                 styles = {
                                         comments = { italic = false },
                                         keywords = { italic = false },
-                                        sidebars = "dark",                                         
+                                        sidebars = "dark",
                                         floats = "dark",
-                        },
+                                },
                         })
                         vim.cmd.colorscheme("tokyonight-night")
                 end
