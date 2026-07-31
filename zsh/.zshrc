@@ -57,3 +57,8 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
 if [[ -f ~/.tools ]]; then
         source ~/.tools
 fi
+
+# Local tools
+if [[ -d ".local/bin" ]]; then
+        PATH=".local/bin:$PATH"
+fi
