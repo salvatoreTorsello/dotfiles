@@ -6,6 +6,8 @@ return {
         },
 
         config = function()
+                local actions = require('telescope.actions')
+
                 require('telescope').setup({
 
                         defaults = {
@@ -22,7 +24,16 @@ return {
                                 },
                                 preview = {
                                         treesitter = true
-                                }
+                                },
+                                mappings = {
+                                        -- Send selected entries (<Tab> to
+                                        -- multi-select) to the quickfix list, or all
+                                        -- results if none selected. Not mapped in insert
+                                        -- mode since <leader> is <Space>, used when typing.
+                                        n = {
+                                                ["<leader>stq"] = actions.smart_send_to_qflist + actions.open_qflist,
+                                        },
+                                },
                         },
                 })
                 local builtin = require('telescope.builtin')
