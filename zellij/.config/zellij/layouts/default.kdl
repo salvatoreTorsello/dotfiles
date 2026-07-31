@@ -1,0 +1,15 @@
+layout {
+    pane
+    pane size=1 split_direction="vertical" {
+        pane size="85%" borderless=true {
+            plugin location="compact-bar"
+        }
+        pane size="15%" borderless=true {
+            plugin location="file:/home/$USER/.config/zellij/plugins/zellij-datetime.wasm" {
+                timezone1 "CEST/+2"
+                default_timezone "CEST"
+                background_color "#237d44"
+            }
+        }
+    }
+}
