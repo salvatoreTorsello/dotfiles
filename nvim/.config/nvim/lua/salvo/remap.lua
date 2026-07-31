@@ -83,3 +83,24 @@ vim.keymap.set("n", "<leader><Right>", ':bn<CR>')
 -- Ensure the 'path' option includes subdirectories for header file search.
 vim.o.path = vim.o.path .. ',**'
 
+-- Quickfix w/ diagnostics
+vim.keymap.set('n', '<leader>xx', function()
+	local diagnostics = vim.diagnostic.get(nil)
+	local items = {}
+	for _, d in ipairs(diagnostics) do
+		local text = d.message
+		if d.source then text = '[' .. d.source .. '] ' .. text end
+		if d.code   then text = text .. ' (' .. tostring(d.code) .. ')' end
+		table.insert(items, {
+			bufnr = d.bufnr,
+			lnum  = d.lnum + 1,
+			col   = d.col + 1,
+			text  = text,
+			type  = ({ 'E', 'W', 'I', 'N' })[d.severity] or 'E',
+		})
+	end
+	vim.fn.setqflist({}, ' ', { title = 'Diagnostics', items = items })
+	vim.cmd('copen')
+end,
+{ desc = "Open quickfix list with LSP diagnostics" }
+)
