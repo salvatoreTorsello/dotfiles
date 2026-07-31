@@ -20,7 +20,35 @@ function lesslt-col() {
 }
 
 ############################################
-# Aliases 
+# Notifications
+############################################
+
+# Ring the terminal bell when a command takes longer than
+# $CMD_NOTIFY_THRESHOLD seconds to finish. Zellij shows a bell
+# indicator on the tab that ran it, even when unfocused.
+zmodload zsh/datetime
+autoload -Uz add-zsh-hook
+
+typeset -g CMD_NOTIFY_THRESHOLD=5
+typeset -g _cmd_notify_start=0
+
+_cmd_notify_preexec() {
+        _cmd_notify_start=$EPOCHSECONDS
+}
+
+_cmd_notify_precmd() {
+        (( _cmd_notify_start == 0 )) && return
+        local elapsed=$(( EPOCHSECONDS - _cmd_notify_start ))
+        _cmd_notify_start=0
+        (( elapsed < CMD_NOTIFY_THRESHOLD )) && return
+        print -n '\a'
+}
+
+add-zsh-hook preexec _cmd_notify_preexec
+add-zsh-hook precmd _cmd_notify_precmd
+
+############################################
+# Aliases
 ############################################
 
 # Python alias
