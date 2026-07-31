@@ -1,15 +1,5 @@
 return {
         {
-                "lewis6991/gitsigns.nvim",
-                config = function()
-                        vim.opt.signcolumn = "no"
-
-                        require("gitsigns").setup({
-                                numhl = true,
-                        })
-                end
-        },
-        {
                 "tpope/vim-fugitive",
                 config = function()
                         vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
@@ -27,6 +17,8 @@ return {
 
                                         local bufnr = vim.api.nvim_get_current_buf()
                                         local opts = {buffer = bufnr, remap = false}
+
+                                        vim.api.nvim_win_set_height(0, math.floor(vim.o.lines * 0.25))
                                         vim.keymap.set("n", "<leader>p", function()
                                                 vim.cmd.Git('push')
                                         end, opts)
@@ -45,6 +37,19 @@ return {
 
                         vim.keymap.set("n", "gu", "<cmd>diffget //2<CR>")
                         vim.keymap.set("n", "gh", "<cmd>diffget //3<CR>")
+                end
+        },
+        {
+                "sindrets/diffview.nvim",
+                dependencies = { "nvim-lua/plenary.nvim" },
+                cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
+                config = function()
+                        require("diffview").setup()
+
+                        vim.keymap.set("n", "<leader>gd", "<cmd>DiffviewOpen<CR>")
+                        vim.keymap.set("n", "<leader>gc", "<cmd>DiffviewClose<CR>")
+                        vim.keymap.set("n", "<leader>gh", "<cmd>DiffviewFileHistory<CR>")
+                        vim.keymap.set("n", "<leader>gH", "<cmd>DiffviewFileHistory %<CR>")
                 end
         },
 }
