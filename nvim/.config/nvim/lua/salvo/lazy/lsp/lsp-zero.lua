@@ -43,8 +43,6 @@ return {
                 },
                 init = function()
                         -- Reserve a space in the gutter
-                        -- This will avoid an annoying layout shift in the screen
-                        vim.opt.signcolumn = 'yes'
                         -- Set the wait time before the diagnostic window appears
                         vim.opt.updatetime = 150
 
@@ -55,6 +53,13 @@ return {
                                         source = "always",
                                         header = "",
                                         prefix = "",
+                                        format = function(diagnostic)
+                                                return string.format(
+                                                        "%s [col %d]",
+                                                        diagnostic.message,
+                                                        diagnostic.col + 1
+                                                )
+                                        end,
                                 },
                                 virtual_text = false,
                                 signs = true,
@@ -97,7 +102,7 @@ return {
                                         vim.api.nvim_create_autocmd("CursorHold", {
                                                 buffer = event.buf,
                                                 callback = function()
-                                                        vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})
+                                                        vim.diagnostic.open_float(nil, {focus=false, scope="line"})
                                                 end,
                                         })
                                 end,
